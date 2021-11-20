@@ -32,6 +32,15 @@ public class GameController : MonoBehaviour
     }
   }
   
+  
+  private void Update()
+  {
+    if (state == GameState.FreeRoam)
+    {
+      playerController.HandleUpdate();
+    }
+  }
+  
   public void SetCurrentScene(SceneDetails currScene)
   {
     PrevScene = CurrentScene;

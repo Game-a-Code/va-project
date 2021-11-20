@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EssentialObjects
       objectReference: {fileID: 0}
+    - target: {fileID: 3878199912747634496, guid: ae85f4af714d9e4edae58b4f588029e7, type: 3}
+      propertyPath: uniqueId
+      value: 13902e33-2d61-4177-9d5c-b1458c437198
+      objectReference: {fileID: 0}
     - target: {fileID: 5268711180296164147, guid: ae85f4af714d9e4edae58b4f588029e7, type: 3}
       propertyPath: m_RootOrder
       value: 0
