@@ -13,12 +13,12 @@ TagManager:
   - UI
   - 
   - 
+  - SolidObjects
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Interactable
+  - Player
+  - Fov
+  - Portal
   - 
   - 
   - 
@@ -40,4 +40,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2161215497
+    locked: 0
+  - name: Foreground
+    uniqueID: 89811415
+    locked: 0
+  - name: Player
+    uniqueID: 2145215223
+    locked: 0
+  - name: Over Player
+    uniqueID: 1378050137
+    locked: 0
+  - name: Battle
+    uniqueID: 1147124443
     locked: 0
