@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 1282797584505212416}
   - component: {fileID: 1776150804494235833}
   - component: {fileID: 8294515333818925138}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SolidObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}

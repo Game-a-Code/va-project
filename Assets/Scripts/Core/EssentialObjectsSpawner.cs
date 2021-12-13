@@ -3,6 +3,8 @@ using UnityEngine;
 public class EssentialObjectsSpawner : MonoBehaviour
 {
   [SerializeField] private GameObject essentialObjectsPrefab;
+  [SerializeField] private int spawnCoordsX = 0;
+  [SerializeField] private int spawnCoordsY = 0;
 
   private void Awake()
   {
@@ -15,7 +17,11 @@ public class EssentialObjectsSpawner : MonoBehaviour
       var grid = FindObjectOfType<Grid>();
       if (grid != null)
         spawnPos = grid.transform.position;
-      
+
+      // If the SpawnPoint was overwritten spawn there.
+      if (spawnCoordsX != 0 || spawnCoordsY != 0)
+        spawnPos = new Vector3(spawnCoordsX, spawnCoordsY, 0);
+
       Instantiate(essentialObjectsPrefab, spawnPos, Quaternion.identity);
     }
   }

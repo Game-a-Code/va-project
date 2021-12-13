@@ -8,7 +8,7 @@ public class Character : MonoBehaviour
   public float moveSpeed;
   
   public bool IsMoving { get; private set; }
-  public float OffsetY { get; private set; } = 0.3f;
+  public float OffsetY { get; private set; } = 0.0f;
 
   private CharacterAnimator animator;
 
