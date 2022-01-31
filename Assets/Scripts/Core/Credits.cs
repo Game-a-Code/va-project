@@ -11,6 +11,13 @@ public class Credits : MonoBehaviour
 
     public void SetText()
     {
-        easterEggText.text = "Found " + PlayerController.EasterEggsFound + "/5 Secrets";
+        if (PlayerController.EasterEggsFound > 0)
+        {
+            easterEggText.text = "Found " + PlayerController.EasterEggsFound + "/5 Secrets";
+        }
+        else
+        {
+            easterEggText.text = "";
+        }
     }
 }
