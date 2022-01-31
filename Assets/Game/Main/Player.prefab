@@ -103,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Frig
   sprite: {fileID: 7152930139536384079, guid: 3111f23cd57d2be48b2ee6bac4a23588, type: 3}
+  playerPrefab: {fileID: 5721936237793929394, guid: a896338c8e8a276139d6671125b710c6, type: 3}
 --- !u!114 &8574325646728890624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,7 +252,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.2784314, g: 0.1764706, b: 0.23529412, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

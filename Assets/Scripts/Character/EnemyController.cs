@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
+// ReSharper disable Unity.InefficientPropertyAccess
+// ReSharper disable once Unity.PreferNonAllocApi
 
 public class EnemyController : MonoBehaviour, Interactable, ISavable
 {
@@ -53,6 +56,8 @@ public class EnemyController : MonoBehaviour, Interactable, ISavable
   {
     battleLost = true;
     fov.gameObject.SetActive(false);
+    gameObject.GetComponent<Collider2D>().enabled = false;
+    gameObject.GetComponent<SpriteRenderer>().enabled = false;
   }
   
 
@@ -79,15 +84,48 @@ public class EnemyController : MonoBehaviour, Interactable, ISavable
 
   public object CaptureState()
   {
-    return battleLost;
+    var saveData = new EnemySaveData()
+    {
+      // Used to be new Float[] (but Rider recommended it)
+      position = new[] {transform.position.x, transform.position.y},
+      lost = battleLost
+    };
+    
+    return saveData;
   }
 
   public void RestoreState(object state)
   {
-    battleLost = (bool) state;
+    var saveData = (EnemySaveData)state;
     
-    if (battleLost)
-      fov.gameObject.SetActive(false);
+    // Restore Position
+    var pos = saveData.position;
+    transform.position = new Vector3(pos[0], pos[1]);
+    
+    // Restore battleLost
+    battleLost = saveData.lost;
+    
+    switch (battleLost)
+    {
+      case true:
+        fov.gameObject.SetActive(false);
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        break;
+      case false:
+        fov.gameObject.SetActive(true);
+        gameObject.GetComponent<Collider2D>().enabled = true;
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        break;
+    }
   }
 
 }
+
+[Serializable]
+public class EnemySaveData
+{
+  public float[] position;
+  public bool lost;
+}
+

@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 // ReSharper disable Unity.InefficientPropertyAccess
 // ReSharper disable once Unity.PreferNonAllocApi
 
@@ -9,11 +9,16 @@ public class PlayerController : MonoBehaviour, ISavable
 {
   [SerializeField] private new string name;
   [SerializeField] private Sprite sprite;
+  public static int BossesBeaten;
+  public static bool FirstGamePlay = true;
+  public static int EasterEggsFound;
+
+  public GameObject playerPrefab;
 
   private Vector2 input;
 
   private Character character;
-
+  
   private void Awake()
   {
     character = GetComponent<Character>();
@@ -81,6 +86,16 @@ public class PlayerController : MonoBehaviour, ISavable
     {
       // Used to be new Float[] (but Rider recommended it)
       position = new[] {transform.position.x, transform.position.y},
+      
+      // Restore Level + HP
+      unitLevel = playerPrefab.GetComponent<BattleUnit>().unitLevel,
+      damage = playerPrefab.GetComponent<BattleUnit>().damage,
+      healing = playerPrefab.GetComponent<BattleUnit>().healing,
+      currentHP = playerPrefab.GetComponent<BattleUnit>().currentHP,
+      maxHP = playerPrefab.GetComponent<BattleUnit>().maxHP,
+      bosses = BossesBeaten,
+      firstGame = FirstGamePlay,
+      easterEggs = EasterEggsFound
     };
     
     return saveData;
@@ -94,7 +109,49 @@ public class PlayerController : MonoBehaviour, ISavable
     var pos = saveData.position;
     transform.position = new Vector3(pos[0], pos[1]);
     
-    // Restore Party
+    // Restore Level + HP
+    playerPrefab.GetComponent<BattleUnit>().unitLevel = saveData.unitLevel;
+    playerPrefab.GetComponent<BattleUnit>().damage = saveData.damage;
+    playerPrefab.GetComponent<BattleUnit>().healing = saveData.healing;
+    playerPrefab.GetComponent<BattleUnit>().currentHP = saveData.currentHP;
+    playerPrefab.GetComponent<BattleUnit>().maxHP = saveData.maxHP;
+    
+    // Restore how many bosses beaten
+    BossesBeaten = saveData.bosses;
+    FirstGamePlay = saveData.firstGame;
+    EasterEggsFound = saveData.easterEggs;
+  }
+
+  public void LevelUp(int dificulty)
+  {
+    int tempLevel = playerPrefab.GetComponent<BattleUnit>().unitLevel;
+    int tempDamage = playerPrefab.GetComponent<BattleUnit>().damage;
+    int tempHealing = playerPrefab.GetComponent<BattleUnit>().healing;
+    int tempMaxHp = playerPrefab.GetComponent<BattleUnit>().maxHP;
+    int tempBosses = BossesBeaten;
+
+    if (dificulty == 0)
+    {
+      tempLevel += 1;
+      tempDamage += 5;
+      tempHealing += 5;
+      tempMaxHp += 15;
+    }
+    else if (dificulty == 1)
+    {
+      tempLevel += 6;
+      tempDamage += 30;
+      tempHealing += 30;
+      tempMaxHp += 90;
+      tempBosses += 1;
+    }
+
+    playerPrefab.GetComponent<BattleUnit>().unitLevel = tempLevel;
+    playerPrefab.GetComponent<BattleUnit>().damage = tempDamage;
+    playerPrefab.GetComponent<BattleUnit>().healing = tempHealing;
+    playerPrefab.GetComponent<BattleUnit>().currentHP = tempMaxHp;
+    playerPrefab.GetComponent<BattleUnit>().maxHP = tempMaxHp;
+    BossesBeaten = tempBosses;
   }
 }
 
@@ -102,4 +159,12 @@ public class PlayerController : MonoBehaviour, ISavable
 public class PlayerSaveData
 {
   public float[] position;
+  public int unitLevel;
+  public int damage;
+  public int healing;
+  public int currentHP;
+  public int maxHP;
+  public int bosses;
+  public bool firstGame;
+  public int easterEggs;
 }

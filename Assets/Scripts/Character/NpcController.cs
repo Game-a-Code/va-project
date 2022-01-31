@@ -5,8 +5,12 @@ using UnityEngine;
 public class NpcController : MonoBehaviour, Interactable
 {
   [SerializeField] private Dialog dialog;
+  [SerializeField] private Dialog specialDialog;
+  [SerializeField] private Dialog endDialog;
   [SerializeField] private List<Vector2> movementPattern;
   [SerializeField] private float timeBetweenPattern;
+  [SerializeField] private bool specialCharacter;
+  [SerializeField] private GameObject Portal;
 
   private NpcState state;
   private float idleTimer;
@@ -24,14 +28,40 @@ public class NpcController : MonoBehaviour, Interactable
     {
       state = NpcState.Dialog;
       character.LookTowards(initiator.position);
-
-      StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () => {
-        idleTimer = 0f;
-        state = NpcState.Idle;
-      }));
+      
+      if (specialCharacter && PlayerController.BossesBeaten == 1)
+      {
+        StartCoroutine(DialogManager.Instance.ShowDialog(specialDialog, () => {
+          idleTimer = 0f;
+          state = NpcState.Idle;
+          // GameController.Instance.ActivateCredits();
+          ActivatePortal();
+        }));
+      }
+      else if (specialCharacter && PlayerController.BossesBeaten == 2)
+      {
+        StartCoroutine(DialogManager.Instance.ShowDialog(endDialog, () => {
+          idleTimer = 0f;
+          state = NpcState.Idle;
+          GameController.Instance.ActivateCredits();
+          ActivatePortal();
+        }));
+      }
+      else
+      {
+        StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () => {
+          idleTimer = 0f;
+          state = NpcState.Idle;
+        }));
+      }
     }
   }
 
+  public void ActivatePortal()
+  {
+    Portal.SetActive(true);
+  }
+  
   private void Update()
   {
     if (state == NpcState.Idle)

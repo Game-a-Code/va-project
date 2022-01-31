@@ -34,9 +34,11 @@ public class BattleSystem : MonoBehaviour
   {
     GameObject playerGo = Instantiate(playerPrefab, playerBattleStation);
     playerUnit = playerGo.GetComponent<BattleUnit>();
-    
+    playerUnit.PlayEnterAnimation();
+
     GameObject enemyGo = Instantiate(enemyCon.EnemyPrefab, enemyBattleStation);
     enemyUnit = enemyGo.GetComponent<BattleUnit>();
+    enemyUnit.PlayEnterAnimation();
 
     dialogueText.text = "A wild " + enemyUnit.unitName + " appproaches...";
     
@@ -52,6 +54,10 @@ public class BattleSystem : MonoBehaviour
   IEnumerator PlayerAttack()
   {
     state = BattleState.Busy;
+    
+    playerUnit.PlayAttackAnimation();
+    enemyUnit.PlayHitAnimation();
+    
     bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
     
     enemyHUD.SetHP(enemyUnit.currentHP);
@@ -61,6 +67,7 @@ public class BattleSystem : MonoBehaviour
 
     if (isDead)
     {
+      enemyUnit.PlayFaintAnimation();
       state = BattleState.Won;
       EndBattle(true);
     }
@@ -75,6 +82,9 @@ public class BattleSystem : MonoBehaviour
   {
     state = BattleState.Busy;
     dialogueText.text = enemyUnit.unitName + " attacks!";
+    
+    enemyUnit.PlayAttackAnimation();
+    playerUnit.PlayHitAnimation();
 
     yield return new WaitForSeconds(1f);
 
@@ -86,6 +96,7 @@ public class BattleSystem : MonoBehaviour
 
     if (isDead)
     {
+      playerUnit.PlayFaintAnimation();
       state = BattleState.Lost;
       EndBattle(false);
     }
@@ -101,11 +112,13 @@ public class BattleSystem : MonoBehaviour
     if (state == BattleState.Won)
     {
       dialogueText.text = "You won the battle!";
+      playerUnit.PlayExitAnimation();
       OnBattleOver(won);
     }
     else if (state == BattleState.Lost)
     {
       dialogueText.text = "You were defeated.";
+      enemyUnit.PlayExitAnimation();
       OnBattleOver(won);
     }
   }
@@ -117,10 +130,10 @@ public class BattleSystem : MonoBehaviour
 
   IEnumerator PlayerHeal()
   {
-    playerUnit.Heal(5);
+    playerUnit.Heal();
     
     playerHUD.SetHP(playerUnit.currentHP);
-    dialogueText.text = "You feel renewed strenght!";
+    dialogueText.text = "You feel renewed strength!";
 
     yield return new WaitForSeconds(2f);
 

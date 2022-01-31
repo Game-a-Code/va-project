@@ -10,7 +10,8 @@ public class Settings : MonoBehaviour
   public KeyCode Left { get; }= KeyCode.LeftArrow;
   public KeyCode Right { get; }= KeyCode.RightArrow;
   public KeyCode Return { get; }= KeyCode.Return;
-  
+  public KeyCode Safe { get; }= KeyCode.J;
+
   // Other Shit
   [SerializeField] private Color highlightedColor;
   public Color HighlightedColor => highlightedColor;
