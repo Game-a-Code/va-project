@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, Interactable, ISavable
 {
+  // Typo on purpose
   [SerializeField] private Dialog dialog;
   [SerializeField] private Dialog dialogAfterBattle;
   [SerializeField] private GameObject exclamation;
